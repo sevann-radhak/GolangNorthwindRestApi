@@ -2,14 +2,12 @@ package database
 
 import "database/sql"
 
-func InitDb() *sql.DB {
-	connectionString := "foot:admin@tcp(localhost:3306)/nothwind"
-
-	databaaseConnection, err := sql.Open("mysql", connectionString)
+func InitDB() *sql.DB {
+	connectionString := "root:admin@tcp(localhost:3306)/northwind"
+	databaseConnection, err := sql.Open("mysql", connectionString)
 
 	if err != nil {
-		panic(err.Error())
+		panic(err.Error()) // Error Handling = manejo de errores
 	}
-
-	return databaaseConnection
+	return databaseConnection
 }
