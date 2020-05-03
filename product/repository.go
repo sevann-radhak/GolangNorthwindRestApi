@@ -6,6 +6,7 @@ type Repository interface {
 	GetProductById(productId int) (*Product, error)
 	GetProducts(params *getProductsRequest) ([]*Product, error)
 	GetTotalProducts() (int, error)
+	InsertProduct(params *getaAdProductRequest) (int64, error)
 }
 
 type repository struct {
@@ -17,11 +18,16 @@ func NewRepository(databaseConnection *sql.DB) Repository {
 }
 
 func (repo *repository) GetProductById(productId int) (*Product, error) {
-	const sql = `SELECT id,product_code,product_name,COALESCE(description,''),
-				standard_cost,list_price,
-				category
-				FROM products
-				WHERE id=?`
+	const sql = `
+		SELECT 
+			id,product_code,
+			product_name,
+			COALESCE(description,''),
+			standard_cost,
+			list_price,
+			category
+		FROM products
+		WHERE id=?`
 	row := repo.db.QueryRow(sql, productId)
 	product := &Product{}
 
@@ -86,4 +92,32 @@ func (repo *repository) GetTotalProducts() (int, error) {
 	}
 
 	return total, nil
+}
+
+func (repo *repository) InsertProduct(params *getaAdProductRequest) (int64, error) {
+	const sql = `
+		INSERT INTO products (
+			product_code,
+			product_name,
+			category,
+			description,
+			list_price,
+			standard_cost )
+		VALUES (?,?,?,?,?,?)`
+
+	result, err := repo.db.Exec(
+		sql,
+		params.ProductCode,
+		params.ProductName,
+		params.Category,
+		params.Description,
+		params.ListPrice,
+		params.StandardCost)
+
+	if err != nil {
+		panic(err)
+	}
+
+	id, _ := result.LastInsertId()
+	return id, nil
 }

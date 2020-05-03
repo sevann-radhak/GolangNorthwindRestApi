@@ -3,6 +3,7 @@ package product
 type Service interface {
 	GetProductById(param *getProductByIDRequest) (*Product, error)
 	GetProducts(params *getProductsRequest) (*ProductsList, error)
+	InsertProduct(params *getaAdProductRequest) (*Product, error)
 }
 
 type service struct {
@@ -32,4 +33,12 @@ func (s *service) GetProducts(params *getProductsRequest) (*ProductsList, error)
 	}
 
 	return &ProductsList{Data: products, TotalRecords: totalProducts}, nil
+}
+
+func (s *service) InsertProduct(params *getaAdProductRequest) (*Product, error) {
+	idProduct, err := s.repo.InsertProduct(params)
+	if err != nil {
+		panic(err)
+	}
+	return s.repo.GetProductById(int(idProduct))
 }

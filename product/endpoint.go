@@ -6,6 +6,15 @@ import (
 	"github.com/go-kit/kit/endpoint"
 )
 
+type getaAdProductRequest struct {
+	Category     string
+	Description  string
+	ListPrice    string
+	StandardCost string
+	ProductCode  string
+	ProductName  string
+}
+
 type getProductByIDRequest struct {
 	ProductID int
 }
@@ -13,6 +22,18 @@ type getProductByIDRequest struct {
 type getProductsRequest struct {
 	Limit  int
 	Offset int
+}
+
+func makeAddProductEndPoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(getaAdProductRequest)
+		result, err := s.InsertProduct(&req)
+		if err != nil {
+			panic(err)
+		}
+
+		return result, nil
+	}
 }
 
 func makeGetProductByIdEndPoint(s Service) endpoint.Endpoint {
@@ -32,7 +53,6 @@ func makeGetProductsEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getProductsRequest)
 		result, err := s.GetProducts(&req)
-
 		if err != nil {
 			panic(err)
 		}
