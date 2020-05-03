@@ -24,9 +24,6 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Mount("/products", product.MakeHttpHandler(productService))
-	// r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.Write([]byte("welcome"))
-	// })
 
 	http.ListenAndServe(":3000", r)
 }
