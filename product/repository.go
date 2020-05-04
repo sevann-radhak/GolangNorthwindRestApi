@@ -3,6 +3,7 @@ package product
 import "database/sql"
 
 type Repository interface {
+	DeleteProductById(params *deleteProductRequest) (int64, error)
 	GetProductById(productId int) (*Product, error)
 	GetProducts(params *getProductsRequest) ([]*Product, error)
 	GetTotalProducts() (int, error)
@@ -16,6 +17,24 @@ type repository struct {
 
 func NewRepository(databaseConnection *sql.DB) Repository {
 	return &repository{db: databaseConnection}
+}
+
+func (repo *repository) DeleteProductById(params *deleteProductRequest) (int64, error) {
+	const sql = `
+		DELETE
+		FROM products
+		WHERE id=?`
+	result, err := repo.db.Exec(sql, params.Id)
+	if err != nil {
+		panic(err)
+	}
+
+	count, err := result.RowsAffected()
+	if err != nil {
+		panic(err)
+	}
+
+	return count, err
 }
 
 func (repo *repository) GetProductById(productId int) (*Product, error) {

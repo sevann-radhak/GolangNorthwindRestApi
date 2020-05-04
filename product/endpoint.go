@@ -34,6 +34,22 @@ type getUpdateProductRequest struct {
 	ProductName  string
 }
 
+type deleteProductRequest struct {
+	Id int
+}
+
+func makeDeleteProductEndPoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(deleteProductRequest)
+		result, err := s.DeleteProductById(&req)
+		if err != nil {
+			panic(err)
+		}
+
+		return result, nil
+	}
+}
+
 func makeAddProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getAddProductRequest)

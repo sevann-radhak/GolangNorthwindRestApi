@@ -1,6 +1,7 @@
 package product
 
 type Service interface {
+	DeleteProductById(params *deleteProductRequest) (int64, error)
 	GetProductById(param *getProductByIDRequest) (*Product, error)
 	GetProducts(params *getProductsRequest) (*ProductsList, error)
 	InsertProduct(params *getAddProductRequest) (*Product, error)
@@ -15,6 +16,10 @@ func NewService(repo Repository) Service {
 	return &service{
 		repo: repo,
 	}
+}
+
+func (s *service) DeleteProductById(params *deleteProductRequest) (int64, error) {
+	return s.repo.DeleteProductById(params)
 }
 
 func (s *service) GetProductById(param *getProductByIDRequest) (*Product, error) {

@@ -13,6 +13,13 @@ import (
 func MakeHttpHandler(s Service) http.Handler {
 	r := chi.NewRouter()
 
+	deleteProductByIdHandler := kithttp.NewServer(
+		makeDeleteProductEndPoint(s),
+		getDeleteProductRequestDecoder,
+		kithttp.EncodeJSONResponse)
+
+	r.Method(http.MethodDelete, "/{id}", deleteProductByIdHandler)
+
 	getProductByIdHandler := kithttp.NewServer(
 		makeGetProductByIdEndPoint(s),
 		getProductByIdRequestDecoder,
@@ -52,6 +59,13 @@ func addProductRequestDecoder(context context.Context, r *http.Request) (interfa
 	}
 
 	return request, nil
+}
+
+func getDeleteProductRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
+	productId, _ := strconv.Atoi(chi.URLParam(r, "id"))
+	return deleteProductRequest{
+		Id: productId,
+	}, nil
 }
 
 func getProductByIdRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
