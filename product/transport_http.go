@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/GolangNorthwindRestApi/helper"
 	"github.com/go-chi/chi"
 	kithttp "github.com/go-kit/kit/transport/http"
 )
@@ -61,10 +62,7 @@ func MakeHttpHandler(s Service) http.Handler {
 func addProductRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
 	request := getAddProductRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	return request, nil
 }
 
@@ -89,21 +87,13 @@ func getProductByIdRequestDecoder(context context.Context, r *http.Request) (int
 func getProductsRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
 	request := getProductsRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
-
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	return request, nil
 }
 
 func updateProductRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
 	request := getUpdateProductRequest{}
 	err := json.NewDecoder(r.Body).Decode(&request)
-
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	return request, nil
 }

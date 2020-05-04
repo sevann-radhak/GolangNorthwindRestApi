@@ -1,6 +1,10 @@
 package product
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/GolangNorthwindRestApi/helper"
+)
 
 type Repository interface {
 	DeleteProductById(params *deleteProductRequest) (int64, error)
@@ -27,15 +31,9 @@ func (repo *repository) DeleteProductById(params *deleteProductRequest) (int64, 
 		FROM products
 		WHERE id=?`
 	result, err := repo.db.Exec(sql, params.Id)
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	count, err := result.RowsAffected()
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	return count, err
 }
 
@@ -53,10 +51,7 @@ func (repo *repository) GetBestSellingProducts() ([]*ProductTop, error) {
 		LIMIT 10;`
 
 	results, err := repo.db.Query(sql)
-
-	if err != nil {
-		panic(err)
-	}
+	helper.Catch(err)
 
 	var products []*ProductTop
 	for results.Next() {
@@ -67,10 +62,7 @@ func (repo *repository) GetBestSellingProducts() ([]*ProductTop, error) {
 			&product.ProductName,
 			&product.Sold)
 
-		if err != nil {
-			panic(err)
-		}
-
+		helper.Catch(err)
 		products = append(products, product)
 	}
 
@@ -113,10 +105,7 @@ func (repo *repository) GetProducts(params *getProductsRequest) ([]*Product, err
 		OFFSET ?`
 
 	results, err := repo.db.Query(sql, params.Limit, params.Offset)
-
-	if err != nil {
-		panic(err)
-	}
+	helper.Catch(err)
 
 	var products []*Product
 	for results.Next() {
@@ -130,10 +119,7 @@ func (repo *repository) GetProducts(params *getProductsRequest) ([]*Product, err
 			&product.ListPrice,
 			&product.Category)
 
-		if err != nil {
-			panic(err)
-		}
-
+		helper.Catch(err)
 		products = append(products, product)
 	}
 
@@ -146,11 +132,7 @@ func (repo *repository) GetTotalProducts() (int, error) {
 	var total int
 	row := repo.db.QueryRow(sql)
 	err := row.Scan(&total)
-
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	return total, nil
 }
 
@@ -162,11 +144,7 @@ func (repo *repository) GetTotalSellings() (float64, error) {
 	var total float64
 	row := repo.db.QueryRow(sql)
 	err := row.Scan(&total)
-
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	return total, nil
 }
 
@@ -190,10 +168,7 @@ func (repo *repository) InsertProduct(params *getAddProductRequest) (int64, erro
 		params.ListPrice,
 		params.StandardCost)
 
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	id, _ := result.LastInsertId()
 	return id, nil
 }
@@ -219,9 +194,6 @@ func (repo *repository) UpdateProduct(params *getUpdateProductRequest) (int64, e
 		params.StandardCost,
 		params.Id)
 
-	if err != nil {
-		panic(err)
-	}
-
+	helper.Catch(err)
 	return params.Id, nil
 }

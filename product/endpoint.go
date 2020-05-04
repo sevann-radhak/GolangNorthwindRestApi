@@ -3,6 +3,7 @@ package product
 import (
 	"context"
 
+	"github.com/GolangNorthwindRestApi/helper"
 	"github.com/go-kit/kit/endpoint"
 )
 
@@ -44,10 +45,7 @@ func makeDeleteProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(deleteProductRequest)
 		result, err := s.DeleteProductById(&req)
-		if err != nil {
-			panic(err)
-		}
-
+		helper.Catch(err)
 		return result, nil
 	}
 }
@@ -56,10 +54,7 @@ func makeAddProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getAddProductRequest)
 		result, err := s.InsertProduct(&req)
-		if err != nil {
-			panic(err)
-		}
-
+		helper.Catch(err)
 		return result, nil
 	}
 }
@@ -67,10 +62,7 @@ func makeAddProductEndPoint(s Service) endpoint.Endpoint {
 func makeGetBestSellingProductsEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		result, err := s.GetBestSellingProducts()
-		if err != nil {
-			panic(err)
-		}
-
+		helper.Catch(err)
 		return result, nil
 	}
 }
@@ -79,9 +71,7 @@ func makeGetProductByIdEndPoint(s Service) endpoint.Endpoint {
 	getProductByIdEndpoint := func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getProductByIDRequest)
 		product, err := s.GetProductById(&req)
-		if err != nil {
-			panic(err)
-		}
+		helper.Catch(err)
 		return product, nil
 	}
 
@@ -92,10 +82,7 @@ func makeGetProductsEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getProductsRequest)
 		result, err := s.GetProducts(&req)
-		if err != nil {
-			panic(err)
-		}
-
+		helper.Catch(err)
 		return result, nil
 	}
 }
@@ -104,10 +91,7 @@ func makeUpdateProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getUpdateProductRequest)
 		result, err := s.UpdateProduct(&req)
-		if err != nil {
-			panic(err)
-		}
-
+		helper.Catch(err)
 		return result, nil
 	}
 }
