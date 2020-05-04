@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/GolangNorthwindRestApi/helper"
 	"github.com/go-chi/chi"
@@ -13,6 +14,13 @@ import (
 func MakeHttpHandler(s Service) http.Handler {
 	r := chi.NewRouter()
 
+	getEmployeeByIdHandler := kithttp.NewServer(
+		makeGetEmployeeByIdEndPoint(s),
+		getEmployeeByIdRequestDecoder,
+		kithttp.EncodeJSONResponse)
+
+	r.Method(http.MethodGet, "/{id}", getEmployeeByIdHandler)
+
 	getEmployeesHandler := kithttp.NewServer(
 		makeGetEmployeesEndPoint(s),
 		getEmployeesRequestDecoder,
@@ -21,6 +29,11 @@ func MakeHttpHandler(s Service) http.Handler {
 	r.Method(http.MethodPost, "/paginated", getEmployeesHandler)
 
 	return r
+}
+
+func getEmployeeByIdRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
+	employeeId, _ := strconv.Atoi(chi.URLParam(r, "id"))
+	return getEmployeeByIdRequest{EmployeId: employeeId}, nil
 }
 
 func getEmployeesRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {

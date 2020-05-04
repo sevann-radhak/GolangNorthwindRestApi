@@ -7,6 +7,7 @@ import (
 )
 
 type Repository interface {
+	GetEmployeeById(employeeId int) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) ([]*Employee, error)
 	GetTotalEmployees() (int, error)
 }
@@ -17,6 +18,42 @@ type repository struct {
 
 func NewRepository(databaseConnection *sql.DB) Repository {
 	return &repository{db: databaseConnection}
+}
+
+func (repo *repository) GetEmployeeById(employeeId int) (*Employee, error) {
+	const sql = `
+		SELECT 
+			id,
+			company,
+			last_name,
+			first_name,
+			email_address,
+			job_title,
+			business_phone,
+			home_phone,
+			COALESCE(mobile_phone,''),
+			fax_number,
+			address
+		FROM northwind.employees
+		WHERE id = ?;`
+
+	row := repo.db.QueryRow(sql, employeeId)
+	employee := &Employee{}
+
+	err := row.Scan(
+		&employee.Id,
+		&employee.Company,
+		&employee.LastName,
+		&employee.FirstName,
+		&employee.EmailAddress,
+		&employee.JotTitle,
+		&employee.BusinessPhone,
+		&employee.HomePhone,
+		&employee.MobilePhone,
+		&employee.FaxNumber,
+		&employee.Address)
+
+	return employee, err
 }
 
 func (repo *repository) GetEmployees(params *getEmployeesRequest) ([]*Employee, error) {
@@ -51,7 +88,7 @@ func (repo *repository) GetEmployees(params *getEmployeesRequest) ([]*Employee, 
 			&employee.FirstName,
 			&employee.EmailAddress,
 			&employee.JotTitle,
-			&employee.BussinessPhone,
+			&employee.BusinessPhone,
 			&employee.HomePhone,
 			&employee.MobilePhone,
 			&employee.FaxNumber,
