@@ -7,6 +7,7 @@ import (
 )
 
 type Repository interface {
+	AddEmploye(params *addEmployeeRequest) (int64, error)
 	GetEmployeeById(param *getEmployeeByIdRequest) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) ([]*Employee, error)
 	GetTotalEmployees() (int, error)
@@ -19,6 +20,39 @@ type repository struct {
 
 func NewRepository(databaseConnection *sql.DB) Repository {
 	return &repository{db: databaseConnection}
+}
+
+func (repo *repository) AddEmploye(params *addEmployeeRequest) (int64, error) {
+	const sql = `
+		INSERT INTO employees (
+			address,
+			business_phone,
+			company,
+			email_address,
+			fax_number,
+			first_name,
+			home_phone,
+			job_title,
+			last_name,
+			mobile_phone )
+		VALUES (?,?,?,?,?,?,?,?,?,?)`
+
+	result, err := repo.db.Exec(
+		sql,
+		params.Address,
+		params.BusinessPhone,
+		params.Company,
+		params.EmailAddress,
+		params.FaxNumber,
+		params.FirstName,
+		params.HomePhone,
+		params.JobTitle,
+		params.LastName,
+		params.MobilePhone)
+
+	helper.Catch(err)
+	id, _ := result.LastInsertId()
+	return id, nil
 }
 
 func (repo *repository) GetEmployeeById(param *getEmployeeByIdRequest) (*Employee, error) {

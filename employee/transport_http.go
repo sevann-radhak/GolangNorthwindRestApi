@@ -14,6 +14,13 @@ import (
 func MakeHttpHandler(s Service) http.Handler {
 	r := chi.NewRouter()
 
+	addEmployeeHandler := kithttp.NewServer(
+		makeAddEmployeeEndPoint(s),
+		addEmployeeRequestDecoder,
+		kithttp.EncodeJSONResponse)
+
+	r.Method(http.MethodPost, "/", addEmployeeHandler)
+
 	getEmployeeByIdHandler := kithttp.NewServer(
 		makeGetEmployeeByIdEndPoint(s),
 		getEmployeeByIdRequestDecoder,
@@ -36,6 +43,13 @@ func MakeHttpHandler(s Service) http.Handler {
 	r.Method(http.MethodGet, "/best-seller", getEmployeeTopHandler)
 
 	return r
+}
+
+func addEmployeeRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
+	request := addEmployeeRequest{}
+	err := json.NewDecoder(r.Body).Decode(&request)
+	helper.Catch(err)
+	return request, nil
 }
 
 func getEmployeeByIdRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {

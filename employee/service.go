@@ -3,6 +3,7 @@ package employee
 import "github.com/GolangNorthwindRestApi/helper"
 
 type Service interface {
+	AddEmploye(params *addEmployeeRequest) (*Employee, error)
 	GetEmployeeById(params *getEmployeeByIdRequest) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) (*EmployeesList, error)
 	GetEmployeeTop() (*EmployeeTop, error)
@@ -14,6 +15,13 @@ type service struct {
 
 func NewService(repo Repository) Service {
 	return &service{repo: repo}
+}
+
+func (s *service) AddEmploye(params *addEmployeeRequest) (*Employee, error) {
+	idEmployee, err := s.repo.AddEmploye(params)
+	helper.Catch(err)
+
+	return s.repo.GetEmployeeById(&getEmployeeByIdRequest{EmployeId: int(idEmployee)})
 }
 
 func (s *service) GetEmployeeById(params *getEmployeeByIdRequest) (*Employee, error) {

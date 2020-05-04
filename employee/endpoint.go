@@ -7,6 +7,19 @@ import (
 	"github.com/go-kit/kit/endpoint"
 )
 
+type addEmployeeRequest struct {
+	Address       string
+	BusinessPhone string
+	Company       string
+	EmailAddress  string
+	FaxNumber     string
+	FirstName     string
+	HomePhone     string
+	JobTitle      string
+	LastName      string
+	MobilePhone   string
+}
+
 type getEmployeeByIdRequest struct {
 	EmployeId int
 }
@@ -17,6 +30,15 @@ type getEmployeesRequest struct {
 }
 
 type getEmployeeTopRequest struct{}
+
+func makeAddEmployeeEndPoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(addEmployeeRequest)
+		result, err := s.AddEmploye(&req)
+		helper.Catch(err)
+		return result, nil
+	}
+}
 
 func makeGetEmployeeByIdEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
