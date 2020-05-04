@@ -4,9 +4,11 @@ import "database/sql"
 
 type Repository interface {
 	DeleteProductById(params *deleteProductRequest) (int64, error)
+	GetBestSellingProducts() ([]*ProductTop, error)
 	GetProductById(productId int) (*Product, error)
 	GetProducts(params *getProductsRequest) ([]*Product, error)
 	GetTotalProducts() (int, error)
+	GetTotalSellings() (float64, error)
 	InsertProduct(params *getAddProductRequest) (int64, error)
 	UpdateProduct(params *getUpdateProductRequest) (int64, error)
 }
@@ -35,6 +37,44 @@ func (repo *repository) DeleteProductById(params *deleteProductRequest) (int64, 
 	}
 
 	return count, err
+}
+
+func (repo *repository) GetBestSellingProducts() ([]*ProductTop, error) {
+	const sql = `
+		SELECT 
+			od.product_id,
+			p.product_code,
+			p.product_name,
+			SUM( od.quantity * od.unit_price ) sold
+		FROM northwind.order_details od
+		INNER JOIN northwind.products p on od.product_id = p.id
+		GROUP BY od.product_id
+		ORDER BY sold desc
+		LIMIT 10;`
+
+	results, err := repo.db.Query(sql)
+
+	if err != nil {
+		panic(err)
+	}
+
+	var products []*ProductTop
+	for results.Next() {
+		product := &ProductTop{}
+		err = results.Scan(
+			&product.Id,
+			&product.ProductCode,
+			&product.ProductName,
+			&product.Sold)
+
+		if err != nil {
+			panic(err)
+		}
+
+		products = append(products, product)
+	}
+
+	return products, nil
 }
 
 func (repo *repository) GetProductById(productId int) (*Product, error) {
@@ -104,6 +144,22 @@ func (repo *repository) GetTotalProducts() (int, error) {
 	const sql = `SELECT COUNT(*) FROM northwind.products;`
 
 	var total int
+	row := repo.db.QueryRow(sql)
+	err := row.Scan(&total)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return total, nil
+}
+
+func (repo *repository) GetTotalSellings() (float64, error) {
+	const sql = `
+		SELECT SUM( od.quantity * od.unit_price ) sold
+		FROM northwind.order_details od;`
+
+	var total float64
 	row := repo.db.QueryRow(sql)
 	err := row.Scan(&total)
 

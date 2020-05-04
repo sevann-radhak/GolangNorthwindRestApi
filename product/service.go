@@ -2,6 +2,7 @@ package product
 
 type Service interface {
 	DeleteProductById(params *deleteProductRequest) (int64, error)
+	GetBestSellingProducts() (*ProductTopResponse, error)
 	GetProductById(param *getProductByIDRequest) (*Product, error)
 	GetProducts(params *getProductsRequest) (*ProductsList, error)
 	InsertProduct(params *getAddProductRequest) (*Product, error)
@@ -20,6 +21,20 @@ func NewService(repo Repository) Service {
 
 func (s *service) DeleteProductById(params *deleteProductRequest) (int64, error) {
 	return s.repo.DeleteProductById(params)
+}
+
+func (s *service) GetBestSellingProducts() (*ProductTopResponse, error) {
+	products, err := s.repo.GetBestSellingProducts()
+	if err != nil {
+		panic(err)
+	}
+
+	totalSellings, err := s.repo.GetTotalSellings()
+	if err != nil {
+		panic(err)
+	}
+
+	return &ProductTopResponse{Data: products, TotalSellings: totalSellings}, nil
 }
 
 func (s *service) GetProductById(param *getProductByIDRequest) (*Product, error) {
