@@ -7,7 +7,7 @@ import (
 )
 
 type Repository interface {
-	GetEmployeeById(employeeId int) (*Employee, error)
+	GetEmployeeById(param *getEmployeeByIdRequest) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) ([]*Employee, error)
 	GetTotalEmployees() (int, error)
 }
@@ -20,7 +20,7 @@ func NewRepository(databaseConnection *sql.DB) Repository {
 	return &repository{db: databaseConnection}
 }
 
-func (repo *repository) GetEmployeeById(employeeId int) (*Employee, error) {
+func (repo *repository) GetEmployeeById(param *getEmployeeByIdRequest) (*Employee, error) {
 	const sql = `
 		SELECT 
 			id,
@@ -37,7 +37,7 @@ func (repo *repository) GetEmployeeById(employeeId int) (*Employee, error) {
 		FROM northwind.employees
 		WHERE id = ?;`
 
-	row := repo.db.QueryRow(sql, employeeId)
+	row := repo.db.QueryRow(sql, param.EmployeId)
 	employee := &Employee{}
 
 	err := row.Scan(

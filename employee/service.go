@@ -16,7 +16,7 @@ func NewService(repo Repository) Service {
 }
 
 func (s *service) GetEmployeeById(params *getEmployeeByIdRequest) (*Employee, error) {
-	return s.repo.GetEmployeeById(params.EmployeId)
+	return s.repo.GetEmployeeById(params)
 }
 
 func (s *service) GetEmployees(params *getEmployeesRequest) (*EmployeesList, error) {
