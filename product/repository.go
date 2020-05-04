@@ -6,7 +6,8 @@ type Repository interface {
 	GetProductById(productId int) (*Product, error)
 	GetProducts(params *getProductsRequest) ([]*Product, error)
 	GetTotalProducts() (int, error)
-	InsertProduct(params *getaAdProductRequest) (int64, error)
+	InsertProduct(params *getAddProductRequest) (int64, error)
+	UpdateProduct(params *getUpdateProductRequest) (int64, error)
 }
 
 type repository struct {
@@ -94,7 +95,7 @@ func (repo *repository) GetTotalProducts() (int, error) {
 	return total, nil
 }
 
-func (repo *repository) InsertProduct(params *getaAdProductRequest) (int64, error) {
+func (repo *repository) InsertProduct(params *getAddProductRequest) (int64, error) {
 	const sql = `
 		INSERT INTO products (
 			product_code,
@@ -120,4 +121,32 @@ func (repo *repository) InsertProduct(params *getaAdProductRequest) (int64, erro
 
 	id, _ := result.LastInsertId()
 	return id, nil
+}
+
+func (repo *repository) UpdateProduct(params *getUpdateProductRequest) (int64, error) {
+	const sql = `
+		UPDATE products
+		SET Product_Code = ?,
+			Product_Name = ?,
+			Category=?,
+			Description=?,
+			List_Price=?,
+			Standard_Cost=?
+		WHERE id = ?`
+
+	_, err := repo.db.Exec(
+		sql,
+		params.ProductCode,
+		params.ProductName,
+		params.Category,
+		params.Description,
+		params.ListPrice,
+		params.StandardCost,
+		params.Id)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return params.Id, nil
 }
