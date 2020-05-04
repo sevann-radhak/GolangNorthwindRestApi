@@ -10,6 +10,7 @@ type Repository interface {
 	GetEmployeeById(param *getEmployeeByIdRequest) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) ([]*Employee, error)
 	GetTotalEmployees() (int, error)
+	GetEmployeeTop() (*EmployeeTop, error)
 }
 
 type repository struct {
@@ -46,14 +47,16 @@ func (repo *repository) GetEmployeeById(param *getEmployeeByIdRequest) (*Employe
 		&employee.LastName,
 		&employee.FirstName,
 		&employee.EmailAddress,
-		&employee.JotTitle,
+		&employee.JobTitle,
 		&employee.BusinessPhone,
 		&employee.HomePhone,
 		&employee.MobilePhone,
 		&employee.FaxNumber,
 		&employee.Address)
 
-	return employee, err
+	helper.Catch(err)
+
+	return employee, nil
 }
 
 func (repo *repository) GetEmployees(params *getEmployeesRequest) ([]*Employee, error) {
@@ -87,7 +90,7 @@ func (repo *repository) GetEmployees(params *getEmployeesRequest) ([]*Employee, 
 			&employee.LastName,
 			&employee.FirstName,
 			&employee.EmailAddress,
-			&employee.JotTitle,
+			&employee.JobTitle,
 			&employee.BusinessPhone,
 			&employee.HomePhone,
 			&employee.MobilePhone,
@@ -99,6 +102,35 @@ func (repo *repository) GetEmployees(params *getEmployeesRequest) ([]*Employee, 
 	}
 
 	return employees, nil
+}
+
+func (repo *repository) GetEmployeeTop() (*EmployeeTop, error) {
+	const sql = `
+		SELECT
+			e.id,
+			COUNT( e.id ) as totalSellings,
+			e.first_name,
+			e.last_name,
+			e.email_address
+		FROM northwind.orders o
+		INNER JOIN northwind.employees e ON o.employee_id = e.id
+		GROUP BY o.employee_id
+		ORDER BY totalSellings desc
+		limit 1;`
+
+	row := repo.db.QueryRow(sql)
+	employee := &EmployeeTop{}
+
+	err := row.Scan(
+		&employee.Id,
+		&employee.TotalSellings,
+		&employee.FirstName,
+		&employee.LastName,
+		&employee.EmailAddress)
+
+	helper.Catch(err)
+
+	return employee, nil
 }
 
 func (repo *repository) GetTotalEmployees() (int, error) {

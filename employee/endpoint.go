@@ -16,6 +16,8 @@ type getEmployeesRequest struct {
 	Offset int
 }
 
+type getEmployeeTopRequest struct{}
+
 func makeGetEmployeeByIdEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getEmployeeByIdRequest)
@@ -29,6 +31,14 @@ func makeGetEmployeesEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getEmployeesRequest)
 		result, err := s.GetEmployees(&req)
+		helper.Catch(err)
+		return result, nil
+	}
+}
+
+func makeGetEmployeeTopEndPoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		result, err := s.GetEmployeeTop()
 		helper.Catch(err)
 		return result, nil
 	}

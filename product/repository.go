@@ -86,7 +86,9 @@ func (repo *repository) GetProductById(productId int) (*Product, error) {
 	err := row.Scan(&product.Id, &product.ProductCode, &product.ProductName, &product.Description,
 		&product.StandardCost, &product.ListPrice, &product.Category)
 
-	return product, err
+	helper.Catch(err)
+
+	return product, nil
 }
 
 func (repo *repository) GetProducts(params *getProductsRequest) ([]*Product, error) {

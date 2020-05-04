@@ -28,6 +28,13 @@ func MakeHttpHandler(s Service) http.Handler {
 
 	r.Method(http.MethodPost, "/paginated", getEmployeesHandler)
 
+	getEmployeeTopHandler := kithttp.NewServer(
+		makeGetEmployeeTopEndPoint(s),
+		getEmployeeTopRequestDecoder,
+		kithttp.EncodeJSONResponse)
+
+	r.Method(http.MethodGet, "/best-seller", getEmployeeTopHandler)
+
 	return r
 }
 
@@ -41,4 +48,8 @@ func getEmployeesRequestDecoder(context context.Context, r *http.Request) (inter
 	err := json.NewDecoder(r.Body).Decode(&request)
 	helper.Catch(err)
 	return request, nil
+}
+
+func getEmployeeTopRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
+	return getEmployeeTopRequest{}, nil
 }
