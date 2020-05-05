@@ -4,6 +4,7 @@ import "github.com/GolangNorthwindRestApi/helper"
 
 type Service interface {
 	AddEmploye(params *addEmployeeRequest) (*Employee, error)
+	DeleteEmployeeById(param *deleteEmployeeByIdRequest) (*Employee, error)
 	GetEmployeeById(params *getEmployeeByIdRequest) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) (*EmployeesList, error)
 	GetEmployeeTop() (*EmployeeTop, error)
@@ -23,6 +24,15 @@ func (s *service) AddEmploye(params *addEmployeeRequest) (*Employee, error) {
 	helper.Catch(err)
 
 	return s.repo.GetEmployeeById(&getEmployeeByIdRequest{EmployeId: int(idEmployee)})
+}
+
+func (s *service) DeleteEmployeeById(param *deleteEmployeeByIdRequest) (*Employee, error) {
+	employeeRequst := &getEmployeeByIdRequest{EmployeId: param.EmployeId}
+	employee, err := s.repo.GetEmployeeById(employeeRequst)
+	helper.Catch(err)
+	_, err = s.repo.DeleteEmployeeById(param)
+	helper.Catch(err)
+	return employee, nil
 }
 
 func (s *service) GetEmployeeById(params *getEmployeeByIdRequest) (*Employee, error) {

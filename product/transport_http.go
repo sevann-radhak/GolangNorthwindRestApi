@@ -72,9 +72,7 @@ func getBestSellingProductsRequestDecoder(context context.Context, r *http.Reque
 
 func getDeleteProductRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
 	productId, _ := strconv.Atoi(chi.URLParam(r, "id"))
-	return deleteProductRequest{
-		Id: productId,
-	}, nil
+	return deleteProductRequest{Id: productId}, nil
 }
 
 func getProductByIdRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {

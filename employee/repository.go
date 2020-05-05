@@ -8,6 +8,7 @@ import (
 
 type Repository interface {
 	AddEmploye(params *addEmployeeRequest) (int64, error)
+	DeleteEmployeeById(param *deleteEmployeeByIdRequest) (int64, error)
 	GetEmployeeById(param *getEmployeeByIdRequest) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) ([]*Employee, error)
 	GetTotalEmployees() (int, error)
@@ -54,6 +55,18 @@ func (repo *repository) AddEmploye(params *addEmployeeRequest) (int64, error) {
 	helper.Catch(err)
 	id, _ := result.LastInsertId()
 	return id, nil
+}
+
+func (repo *repository) DeleteEmployeeById(param *deleteEmployeeByIdRequest) (int64, error) {
+	const sql = `
+		DELETE
+		FROM employees
+		WHERE id = ?`
+	result, err := repo.db.Exec(sql, param.EmployeId)
+	helper.Catch(err)
+	count, err := result.RowsAffected()
+	helper.Catch(err)
+	return count, err
 }
 
 func (repo *repository) GetEmployeeById(param *getEmployeeByIdRequest) (*Employee, error) {

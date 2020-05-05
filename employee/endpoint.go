@@ -58,6 +58,15 @@ func makeAddEmployeeEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+func makeDeleteEmployeeEndPoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(deleteEmployeeByIdRequest)
+		result, err := s.DeleteEmployeeById(&req)
+		helper.Catch(err)
+		return result, nil
+	}
+}
+
 func makeGetEmployeeByIdEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getEmployeeByIdRequest)

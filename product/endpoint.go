@@ -41,19 +41,19 @@ type deleteProductRequest struct {
 	Id int
 }
 
-func makeDeleteProductEndPoint(s Service) endpoint.Endpoint {
+func makeAddProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req := request.(deleteProductRequest)
-		result, err := s.DeleteProductById(&req)
+		req := request.(getAddProductRequest)
+		result, err := s.InsertProduct(&req)
 		helper.Catch(err)
 		return result, nil
 	}
 }
 
-func makeAddProductEndPoint(s Service) endpoint.Endpoint {
+func makeDeleteProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		req := request.(getAddProductRequest)
-		result, err := s.InsertProduct(&req)
+		req := request.(deleteProductRequest)
+		result, err := s.DeleteProductById(&req)
 		helper.Catch(err)
 		return result, nil
 	}

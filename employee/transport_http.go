@@ -21,6 +21,13 @@ func MakeHttpHandler(s Service) http.Handler {
 
 	r.Method(http.MethodPost, "/", addEmployeeHandler)
 
+	deleteEmployeeHandler := kithttp.NewServer(
+		makeDeleteEmployeeEndPoint(s),
+		deleteEmployeeRequestDecoder,
+		kithttp.EncodeJSONResponse)
+
+	r.Method(http.MethodDelete, "/{id}", deleteEmployeeHandler)
+
 	getEmployeeByIdHandler := kithttp.NewServer(
 		makeGetEmployeeByIdEndPoint(s),
 		getEmployeeByIdRequestDecoder,
@@ -57,6 +64,11 @@ func addEmployeeRequestDecoder(context context.Context, r *http.Request) (interf
 	err := json.NewDecoder(r.Body).Decode(&request)
 	helper.Catch(err)
 	return request, nil
+}
+
+func deleteEmployeeRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
+	employeeId, _ := strconv.Atoi(chi.URLParam(r, "id"))
+	return deleteEmployeeByIdRequest{EmployeId: employeeId}, nil
 }
 
 func getEmployeeByIdRequestDecoder(context context.Context, r *http.Request) (interface{}, error) {
