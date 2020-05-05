@@ -12,6 +12,7 @@ type Repository interface {
 	GetEmployees(params *getEmployeesRequest) ([]*Employee, error)
 	GetTotalEmployees() (int, error)
 	GetEmployeeTop() (*EmployeeTop, error)
+	UpdateEmployee(params *updateEmployeeRequest) (int, error)
 }
 
 type repository struct {
@@ -175,4 +176,38 @@ func (repo *repository) GetTotalEmployees() (int, error) {
 	err := row.Scan(&total)
 	helper.Catch(err)
 	return total, nil
+}
+
+func (repo *repository) UpdateEmployee(params *updateEmployeeRequest) (int, error) {
+	const sql = `
+		UPDATE employees 
+		SET	address = ?,
+			business_phone = ?,
+			company = ?,
+			email_address = ?,
+			fax_number = ?,
+			first_name = ?,
+			home_phone = ?,
+			job_title = ?,
+			last_name = ?,
+			mobile_phone = ?
+		WHERE id = ?;`
+
+	_, err := repo.db.Exec(
+		sql,
+		params.Address,
+		params.BusinessPhone,
+		params.Company,
+		params.EmailAddress,
+		params.FaxNumber,
+		params.FirstName,
+		params.HomePhone,
+		params.JobTitle,
+		params.LastName,
+		params.MobilePhone,
+		params.Id)
+
+	helper.Catch(err)
+
+	return params.Id, nil
 }

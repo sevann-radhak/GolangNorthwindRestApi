@@ -20,6 +20,10 @@ type addEmployeeRequest struct {
 	MobilePhone   string
 }
 
+type deleteEmployeeByIdRequest struct {
+	EmployeId int
+}
+
 type getEmployeeByIdRequest struct {
 	EmployeId int
 }
@@ -30,6 +34,20 @@ type getEmployeesRequest struct {
 }
 
 type getEmployeeTopRequest struct{}
+
+type updateEmployeeRequest struct {
+	Address       string
+	BusinessPhone string
+	Company       string
+	EmailAddress  string
+	FaxNumber     string
+	FirstName     string
+	HomePhone     string
+	Id            int
+	JobTitle      string
+	LastName      string
+	MobilePhone   string
+}
 
 func makeAddEmployeeEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
@@ -61,6 +79,15 @@ func makeGetEmployeesEndPoint(s Service) endpoint.Endpoint {
 func makeGetEmployeeTopEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		result, err := s.GetEmployeeTop()
+		helper.Catch(err)
+		return result, nil
+	}
+}
+
+func makeUpdateEmployeeEndPoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(updateEmployeeRequest)
+		result, err := s.UpdateEmployee(&req)
 		helper.Catch(err)
 		return result, nil
 	}

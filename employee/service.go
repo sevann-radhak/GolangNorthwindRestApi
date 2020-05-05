@@ -7,6 +7,7 @@ type Service interface {
 	GetEmployeeById(params *getEmployeeByIdRequest) (*Employee, error)
 	GetEmployees(params *getEmployeesRequest) (*EmployeesList, error)
 	GetEmployeeTop() (*EmployeeTop, error)
+	UpdateEmployee(params *updateEmployeeRequest) (*Employee, error)
 }
 
 type service struct {
@@ -40,4 +41,10 @@ func (s *service) GetEmployeeTop() (*EmployeeTop, error) {
 	employee, err := s.repo.GetEmployeeTop()
 	helper.Catch(err)
 	return employee, nil
+}
+
+func (s *service) UpdateEmployee(params *updateEmployeeRequest) (*Employee, error) {
+	idEmployee, err := s.repo.UpdateEmployee(params)
+	helper.Catch(err)
+	return s.repo.GetEmployeeById(&getEmployeeByIdRequest{EmployeId: int(idEmployee)})
 }
