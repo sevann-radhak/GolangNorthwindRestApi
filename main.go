@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/GolangNorthwindRestApi/customer"
 	"github.com/GolangNorthwindRestApi/database"
 	"github.com/GolangNorthwindRestApi/employee"
 	"github.com/GolangNorthwindRestApi/product"
@@ -20,20 +21,24 @@ func main() {
 	defer databaaseConnection.Close()
 
 	var (
+		customerRepository = customer.NewRepository(databaaseConnection)
 		employeeRepository = employee.NewRepository(databaaseConnection)
 		productRepository  = product.NewRepository(databaaseConnection)
 	)
 
 	var (
+		customerService customer.Service
 		employeeService employee.Service
 		productService  product.Service
 	)
 
+	customerService = customer.NewService(customerRepository)
 	employeeService = employee.NewService(employeeRepository)
 	productService = product.NewService(productRepository)
 
 	r := chi.NewRouter()
 
+	r.Mount("/customers", customer.MakeHttpHandler(customerService))
 	r.Mount("/employees", employee.MakeHttpHandler(employeeService))
 	r.Mount("/products", product.MakeHttpHandler(productService))
 
