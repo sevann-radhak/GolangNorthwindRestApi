@@ -41,6 +41,13 @@ type deleteProductRequest struct {
 	Id int
 }
 
+// @Summary Create new Product
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param addProductRequest body product.getAddProductRequest true "User data"
+// @Success 200 {object} product.Product "New product created"
+// @Router /products/ [post]
 func makeAddProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getAddProductRequest)
@@ -50,6 +57,13 @@ func makeAddProductEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Delete Product by Id
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param id path int true "User data"
+// @Success 200 {object} product.Product "Product deleted"
+// @Router /products/{id} [delete]
 func makeDeleteProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(deleteProductRequest)
@@ -59,6 +73,12 @@ func makeDeleteProductEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Get best selling Products
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Success 200 {object} product.ProductTopResponse "Top ten best selling products"
+// @Router /products/bestselling [get]
 func makeGetBestSellingProductsEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		result, err := s.GetBestSellingProducts()
@@ -67,6 +87,13 @@ func makeGetBestSellingProductsEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Get Product by Id
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param id path int true "User data"
+// @Success 200 {object} product.Product "Product"
+// @Router /products/{id} [get]
 func makeGetProductByIdEndPoint(s Service) endpoint.Endpoint {
 	getProductByIdEndpoint := func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getProductByIDRequest)
@@ -78,6 +105,13 @@ func makeGetProductByIdEndPoint(s Service) endpoint.Endpoint {
 	return getProductByIdEndpoint
 }
 
+// @Summary Products list
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param getProductsRequest body product.getProductsRequest true "User data"
+// @Success 200 {object} product.ProductsList "Products paginated"
+// @Router /products/paginated [post]
 func makeGetProductsEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getProductsRequest)
@@ -87,6 +121,13 @@ func makeGetProductsEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Update Product
+// @Tags Product
+// @Accept json
+// @Produce json
+// @Param updateProductRequest body product.getUpdateProductRequest true "User data"
+// @Success 200 {object} product.Product "Product updated"
+// @Router /products [put]
 func makeUpdateProductEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getUpdateProductRequest)

@@ -134,6 +134,91 @@ definitions:
       mobilePhone:
         type: string
     type: object
+  product.Product:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      listPrice:
+        type: number
+      productCode:
+        type: string
+      productName:
+        type: string
+      standardCost:
+        type: number
+    type: object
+  product.ProductTop:
+    properties:
+      id:
+        type: integer
+      productCode:
+        type: string
+      productName:
+        type: string
+      sold:
+        type: number
+    type: object
+  product.ProductTopResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/product.ProductTop'
+        type: array
+      totalSellings:
+        type: number
+    type: object
+  product.ProductsList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/product.Product'
+        type: array
+      totalRecords:
+        type: integer
+    type: object
+  product.getAddProductRequest:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      listPrice:
+        type: number
+      productCode:
+        type: string
+      productName:
+        type: string
+      standardCost:
+        type: number
+    type: object
+  product.getProductsRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+    type: object
+  product.getUpdateProductRequest:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      listPrice:
+        type: number
+      productCode:
+        type: string
+      productName:
+        type: string
+      standardCost:
+        type: number
+    type: object
 info:
   contact:
     email: sevann.radhak@gmail.com
@@ -183,7 +268,7 @@ paths:
           description: New employee created
           schema:
             $ref: '#/definitions/employee.Employee'
-      summary: Create new Emplyee
+      summary: Create new Employee
       tags:
       - Employee
     put:
@@ -280,4 +365,120 @@ paths:
       summary: Emplyees list
       tags:
       - Employee
+  /products:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: updateProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/product.getUpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated
+          schema:
+            $ref: '#/definitions/product.Product'
+      summary: Update Product
+      tags:
+      - Product
+  /products/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: addProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/product.getAddProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New product created
+          schema:
+            $ref: '#/definitions/product.Product'
+      summary: Create new Product
+      tags:
+      - Product
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted
+          schema:
+            $ref: '#/definitions/product.Product'
+      summary: Delete Product by Id
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product
+          schema:
+            $ref: '#/definitions/product.Product'
+      summary: Get Product by Id
+      tags:
+      - Product
+  /products/bestselling:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Top ten best selling products
+          schema:
+            $ref: '#/definitions/product.ProductTopResponse'
+      summary: Get best selling Products
+      tags:
+      - Product
+  /products/paginated:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: getProductsRequest
+        required: true
+        schema:
+          $ref: '#/definitions/product.getProductsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products paginated
+          schema:
+            $ref: '#/definitions/product.ProductsList'
+      summary: Products list
+      tags:
+      - Product
 swagger: "2.0"

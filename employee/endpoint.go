@@ -49,7 +49,7 @@ type updateEmployeeRequest struct {
 	MobilePhone   string
 }
 
-// @Summary Create new Emplyee
+// @Summary Create new Employee
 // @Tags Employee
 // @Accept json
 // @Produce json
