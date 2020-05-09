@@ -224,6 +224,163 @@
                 }
             }
         },
+        "/orders/": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Create new Order",
+                "parameters": [
+                    {
+                        "description": "User data",
+                        "name": "addOrderRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/order.addOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New order created",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderItem"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/paginated": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Get Orders",
+                "parameters": [
+                    {
+                        "description": "User data",
+                        "name": "getOrdersRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/order.getOrdersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Orders list paginated",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderList"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Get Order by Id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User data",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order with details",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderItem"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Delete Order",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User data",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order deleted and rows affected",
+                        "schema": {
+                            "$ref": "#/definitions/order.OrderItemDeleted"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}/detail/{orderDetailId}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Delete OrderDetail",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User data",
+                        "name": "orderDetailId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
         "/products": {
             "put": {
                 "consumes": [
@@ -611,6 +768,150 @@
                 },
                 "mobilePhone": {
                     "type": "string"
+                }
+            }
+        },
+        "order.OrderDetaiItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "number"
+                },
+                "unit_price": {
+                    "type": "number"
+                }
+            }
+        },
+        "order.OrderItem": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "company": {
+                    "type": "string"
+                },
+                "customer": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/order.OrderDetaiItem"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order_date": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "status_id": {
+                    "type": "string"
+                },
+                "status_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "order.OrderItemDeleted": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "$ref": "#/definitions/order.OrderItem"
+                },
+                "rows_affected": {
+                    "type": "integer"
+                }
+            }
+        },
+        "order.OrderList": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/order.OrderItem"
+                    }
+                },
+                "total_records": {
+                    "type": "integer"
+                }
+            }
+        },
+        "order.addOrderDetailRequest": {
+            "type": "object",
+            "properties": {
+                "orderId": {
+                    "type": "integer"
+                },
+                "productId": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "number"
+                },
+                "unitPrice": {
+                    "type": "number"
+                }
+            }
+        },
+        "order.addOrderRequest": {
+            "type": "object",
+            "properties": {
+                "customerId": {
+                    "type": "integer"
+                },
+                "orderDate": {
+                    "type": "string"
+                },
+                "orderDetails": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/order.addOrderDetailRequest"
+                    }
+                }
+            }
+        },
+        "order.getOrdersRequest": {
+            "type": "object",
+            "properties": {
+                "dateFrom": {
+                    "type": "object"
+                },
+                "dateTo": {
+                    "type": "object"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "object"
                 }
             }
         },

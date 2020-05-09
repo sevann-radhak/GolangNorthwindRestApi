@@ -134,6 +134,100 @@ definitions:
       mobilePhone:
         type: string
     type: object
+  order.OrderDetaiItem:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity:
+        type: number
+      unit_price:
+        type: number
+    type: object
+  order.OrderItem:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      company:
+        type: string
+      customer:
+        type: string
+      customer_id:
+        type: string
+      data:
+        items:
+          $ref: '#/definitions/order.OrderDetaiItem'
+        type: array
+      id:
+        type: integer
+      order_date:
+        type: string
+      phone:
+        type: string
+      status_id:
+        type: string
+      status_name:
+        type: string
+    type: object
+  order.OrderItemDeleted:
+    properties:
+      data:
+        $ref: '#/definitions/order.OrderItem'
+        type: object
+      rows_affected:
+        type: integer
+    type: object
+  order.OrderList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/order.OrderItem'
+        type: array
+      total_records:
+        type: integer
+    type: object
+  order.addOrderDetailRequest:
+    properties:
+      orderId:
+        type: integer
+      productId:
+        type: integer
+      quantity:
+        type: number
+      unitPrice:
+        type: number
+    type: object
+  order.addOrderRequest:
+    properties:
+      customerId:
+        type: integer
+      orderDate:
+        type: string
+      orderDetails:
+        items:
+          $ref: '#/definitions/order.addOrderDetailRequest'
+        type: array
+    type: object
+  order.getOrdersRequest:
+    properties:
+      dateFrom:
+        type: object
+      dateTo:
+        type: object
+      limit:
+        type: integer
+      offset:
+        type: integer
+      status:
+        type: object
+    type: object
   product.Product:
     properties:
       category:
@@ -365,6 +459,107 @@ paths:
       summary: Emplyees list
       tags:
       - Employee
+  /orders/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: addOrderRequest
+        required: true
+        schema:
+          $ref: '#/definitions/order.addOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New order created
+          schema:
+            $ref: '#/definitions/order.OrderItem'
+      summary: Create new Order
+      tags:
+      - Order
+  /orders/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order deleted and rows affected
+          schema:
+            $ref: '#/definitions/order.OrderItemDeleted'
+      summary: Delete Order
+      tags:
+      - Order
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order with details
+          schema:
+            $ref: '#/definitions/order.OrderItem'
+      summary: Get Order by Id
+      tags:
+      - Order
+  /orders/{id}/detail/{orderDetailId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: path
+        name: orderDetailId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: integer
+      summary: Delete OrderDetail
+      tags:
+      - Order
+  /orders/paginated:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: getOrdersRequest
+        required: true
+        schema:
+          $ref: '#/definitions/order.getOrdersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Orders list paginated
+          schema:
+            $ref: '#/definitions/order.OrderList'
+      summary: Get Orders
+      tags:
+      - Order
   /products:
     put:
       consumes:
