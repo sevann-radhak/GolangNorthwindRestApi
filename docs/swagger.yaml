@@ -1,0 +1,283 @@
+definitions:
+  customer.Customer:
+    properties:
+      address:
+        type: string
+      bussiness_phone:
+        type: string
+      city:
+        type: string
+      company:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+    type: object
+  customer.CustomersList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/customer.Customer'
+        type: array
+      total_records:
+        type: integer
+    type: object
+  customer.getCustomersRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+    type: object
+  employee.Employee:
+    properties:
+      address:
+        type: string
+      bussiness_phone:
+        type: string
+      company:
+        type: string
+      email_address:
+        type: string
+      fax_number:
+        type: string
+      first_name:
+        type: string
+      home_phone:
+        type: string
+      id:
+        type: integer
+      job_title:
+        type: string
+      last_name:
+        type: string
+      mobile_phone:
+        type: string
+    type: object
+  employee.EmployeeTop:
+    properties:
+      email_address:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      total_sellings:
+        type: string
+    type: object
+  employee.EmployeesList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/employee.Employee'
+        type: array
+      total_records:
+        type: integer
+    type: object
+  employee.addEmployeeRequest:
+    properties:
+      address:
+        type: string
+      businessPhone:
+        type: string
+      company:
+        type: string
+      emailAddress:
+        type: string
+      faxNumber:
+        type: string
+      firstName:
+        type: string
+      homePhone:
+        type: string
+      jobTitle:
+        type: string
+      lastName:
+        type: string
+      mobilePhone:
+        type: string
+    type: object
+  employee.getEmployeesRequest:
+    properties:
+      limit:
+        type: integer
+      offset:
+        type: integer
+    type: object
+  employee.updateEmployeeRequest:
+    properties:
+      address:
+        type: string
+      businessPhone:
+        type: string
+      company:
+        type: string
+      emailAddress:
+        type: string
+      faxNumber:
+        type: string
+      firstName:
+        type: string
+      homePhone:
+        type: string
+      id:
+        type: integer
+      jobTitle:
+        type: string
+      lastName:
+        type: string
+      mobilePhone:
+        type: string
+    type: object
+info:
+  contact:
+    email: sevann.radhak@gmail.com
+    name: Sevann Radhak
+    url: http://github.com/sevannr
+  description: This is a sample server celler developed with Golang and MariaDB
+  license: {}
+  title: Products with Golang - API
+  version: "1.0"
+paths:
+  /customers/paginated:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: getCustomers
+        required: true
+        schema:
+          $ref: '#/definitions/customer.getCustomersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Paginate list of customers
+          schema:
+            $ref: '#/definitions/customer.CustomersList'
+      summary: Customers list
+      tags:
+      - Customer
+  /employees/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: addEmployeeRequest
+        required: true
+        schema:
+          $ref: '#/definitions/employee.addEmployeeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New employee created
+          schema:
+            $ref: '#/definitions/employee.Employee'
+      summary: Create new Emplyee
+      tags:
+      - Employee
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: updateEmployeeRequest
+        required: true
+        schema:
+          $ref: '#/definitions/employee.updateEmployeeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee updated
+          schema:
+            $ref: '#/definitions/employee.Employee'
+      summary: Update an Emplyee
+      tags:
+      - Employee
+  /employees/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Employee Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee
+          schema:
+            $ref: '#/definitions/employee.Employee'
+      summary: Delete Emplyee by Id
+      tags:
+      - Employee
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Employee Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee
+          schema:
+            $ref: '#/definitions/employee.Employee'
+      summary: Emplyee by Id
+      tags:
+      - Employee
+  /employees/best-seller:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Best Employee
+          schema:
+            $ref: '#/definitions/employee.EmployeeTop'
+      summary: Best Emplyee
+      tags:
+      - Employee
+  /employees/paginated:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User data
+        in: body
+        name: getEmployees
+        required: true
+        schema:
+          $ref: '#/definitions/employee.getEmployeesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Paginate list of employees
+          schema:
+            $ref: '#/definitions/employee.EmployeesList'
+      summary: Emplyees list
+      tags:
+      - Employee
+swagger: "2.0"

@@ -49,6 +49,13 @@ type updateEmployeeRequest struct {
 	MobilePhone   string
 }
 
+// @Summary Create new Emplyee
+// @Tags Employee
+// @Accept json
+// @Produce json
+// @Param addEmployeeRequest body employee.addEmployeeRequest true "User data"
+// @Success 200 {object} employee.Employee "New employee created"
+// @Router /employees/ [post]
 func makeAddEmployeeEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(addEmployeeRequest)
@@ -58,6 +65,13 @@ func makeAddEmployeeEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Delete Emplyee by Id
+// @Tags Employee
+// @Accept json
+// @Produce json
+// @Param id path int true "Employee Id"
+// @Success 200 {object} employee.Employee "Employee"
+// @Router /employees/{id} [delete]
 func makeDeleteEmployeeEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(deleteEmployeeByIdRequest)
@@ -67,6 +81,13 @@ func makeDeleteEmployeeEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Emplyee by Id
+// @Tags Employee
+// @Accept json
+// @Produce json
+// @Param id path int true "Employee Id"
+// @Success 200 {object} employee.Employee "Employee"
+// @Router /employees/{id} [get]
 func makeGetEmployeeByIdEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getEmployeeByIdRequest)
@@ -76,6 +97,13 @@ func makeGetEmployeeByIdEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Emplyees list
+// @Tags Employee
+// @Accept json
+// @Produce json
+// @Param getEmployees body employee.getEmployeesRequest true "User data"
+// @Success 200 {object} employee.EmployeesList "Paginate list of employees"
+// @Router /employees/paginated [post]
 func makeGetEmployeesEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(getEmployeesRequest)
@@ -85,6 +113,12 @@ func makeGetEmployeesEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Best Emplyee
+// @Tags Employee
+// @Accept json
+// @Produce json
+// @Success 200 {object} employee.EmployeeTop "Best Employee"
+// @Router /employees/best-seller [get]
 func makeGetEmployeeTopEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		result, err := s.GetEmployeeTop()
@@ -93,6 +127,13 @@ func makeGetEmployeeTopEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
+// @Summary Update an Emplyee
+// @Tags Employee
+// @Accept json
+// @Produce json
+// @Param updateEmployeeRequest body employee.updateEmployeeRequest true "User data"
+// @Success 200 {object} employee.Employee "Employee updated"
+// @Router /employees/ [put]
 func makeUpdateEmployeeEndPoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(updateEmployeeRequest)

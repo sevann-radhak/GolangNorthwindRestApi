@@ -1,7 +1,8 @@
 package main
 
+// httpSwagger "github.com/swaggo/http-swagger"
+
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/GolangNorthwindRestApi/customer"
@@ -13,12 +14,22 @@ import (
 	"github.com/go-chi/chi"
 
 	_ "github.com/go-sql-driver/mysql"
+
+	_ "github.com/GolangNorthwindRestApi/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
-var databaaseConnection *sql.DB
+// var databaaseConnection *sql.DB
+
+// @title Products with Golang - API
+// @version 1.0
+// @description This is a sample server celler developed with Golang and MariaDB
+// @contact.name Sevann Radhak
+// @contact.url http://github.com/sevannr
+// @contact.email sevann.radhak@gmail.com
 
 func main() {
-	databaaseConnection = database.InitDB()
+	databaaseConnection := database.InitDB()
 	defer databaaseConnection.Close()
 
 	var (
@@ -46,6 +57,8 @@ func main() {
 	r.Mount("/employees", employee.MakeHttpHandler(employeeService))
 	r.Mount("/orders", order.MakeHttpHandler(orderService))
 	r.Mount("/products", product.MakeHttpHandler(productService))
+
+	r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL("../swagger/doc.json")))
 
 	http.ListenAndServe(":3000", r)
 }
