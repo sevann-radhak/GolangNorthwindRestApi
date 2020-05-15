@@ -8,6 +8,7 @@ import (
 	"github.com/GolangNorthwindRestApi/customer"
 	"github.com/GolangNorthwindRestApi/database"
 	"github.com/GolangNorthwindRestApi/employee"
+	"github.com/GolangNorthwindRestApi/helper"
 	"github.com/GolangNorthwindRestApi/order"
 	"github.com/GolangNorthwindRestApi/product"
 
@@ -52,6 +53,7 @@ func main() {
 	productService = product.NewService(productRepository)
 
 	r := chi.NewRouter()
+	r.Use(helper.GetCors().Handler)
 
 	r.Mount("/customers", customer.MakeHttpHandler(customerService))
 	r.Mount("/employees", employee.MakeHttpHandler(employeeService))
