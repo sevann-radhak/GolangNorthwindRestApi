@@ -24,5 +24,5 @@ type EmployeeTop struct {
 	EmailAddress string `json:"emailAddress"`
 	FirstName    string `json:"firstName"`
 	LastName     string `json:"lastName"`
-	TotalSales   string `json:"total_sales"`
+	TotalSales   string `json:"totalSales"`
 }
