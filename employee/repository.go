@@ -171,7 +171,7 @@ func (repo *repository) GetEmployeeTop() (*EmployeeTop, error) {
 
 	err := row.Scan(
 		&employee.Id,
-		&employee.TotalSellings,
+		&employee.TotalSales,
 		&employee.FirstName,
 		&employee.LastName,
 		&employee.EmailAddress)

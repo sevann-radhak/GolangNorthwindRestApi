@@ -20,9 +20,9 @@ type EmployeesList struct {
 }
 
 type EmployeeTop struct {
-	Id            int    `json:"id"`
-	EmailAddress  string `json:"email_address"`
-	FirstName     string `json:"first_name"`
-	LastName      string `json:"last_name"`
-	TotalSellings string `json:"total_sellings"`
+	Id           int    `json:"id"`
+	EmailAddress string `json:"emailAddress"`
+	FirstName    string `json:"firstName"`
+	LastName     string `json:"lastName"`
+	TotalSales   string `json:"total_sales"`
 }
