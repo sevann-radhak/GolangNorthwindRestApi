@@ -73,7 +73,7 @@ var doc = `{
                 "tags": [
                     "Employee"
                 ],
-                "summary": "Update an Emplyee",
+                "summary": "Update an Employee",
                 "parameters": [
                     {
                         "description": "User data",
@@ -137,7 +137,7 @@ var doc = `{
                 "tags": [
                     "Employee"
                 ],
-                "summary": "Best Emplyee",
+                "summary": "Best Employee",
                 "responses": {
                     "200": {
                         "description": "Best Employee",
@@ -159,7 +159,7 @@ var doc = `{
                 "tags": [
                     "Employee"
                 ],
-                "summary": "Emplyees list",
+                "summary": "Employees list",
                 "parameters": [
                     {
                         "description": "User data",
@@ -192,7 +192,7 @@ var doc = `{
                 "tags": [
                     "Employee"
                 ],
-                "summary": "Emplyee by Id",
+                "summary": "Employee by Id",
                 "parameters": [
                     {
                         "type": "integer",
@@ -221,7 +221,7 @@ var doc = `{
                 "tags": [
                     "Employee"
                 ],
-                "summary": "Delete Emplyee by Id",
+                "summary": "Delete Employee by Id",
                 "parameters": [
                     {
                         "type": "integer",
@@ -638,34 +638,34 @@ var doc = `{
                 "address": {
                     "type": "string"
                 },
-                "bussiness_phone": {
+                "bussinessPhone": {
                     "type": "string"
                 },
                 "company": {
                     "type": "string"
                 },
-                "email_address": {
+                "emailAddress": {
                     "type": "string"
                 },
-                "fax_number": {
+                "faxNumber": {
                     "type": "string"
                 },
-                "first_name": {
+                "firstName": {
                     "type": "string"
                 },
-                "home_phone": {
+                "homePhone": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "job_title": {
+                "jobTitle": {
                     "type": "string"
                 },
-                "last_name": {
+                "lastName": {
                     "type": "string"
                 },
-                "mobile_phone": {
+                "mobilePhone": {
                     "type": "string"
                 }
             }

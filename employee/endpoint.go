@@ -65,7 +65,7 @@ func makeAddEmployeeEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
-// @Summary Delete Emplyee by Id
+// @Summary Delete Employee by Id
 // @Tags Employee
 // @Accept json
 // @Produce json
@@ -81,7 +81,7 @@ func makeDeleteEmployeeEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
-// @Summary Emplyee by Id
+// @Summary Employee by Id
 // @Tags Employee
 // @Accept json
 // @Produce json
@@ -97,7 +97,7 @@ func makeGetEmployeeByIdEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
-// @Summary Emplyees list
+// @Summary Employees list
 // @Tags Employee
 // @Accept json
 // @Produce json
@@ -113,7 +113,7 @@ func makeGetEmployeesEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
-// @Summary Best Emplyee
+// @Summary Best Employee
 // @Tags Employee
 // @Accept json
 // @Produce json
@@ -127,7 +127,7 @@ func makeGetEmployeeTopEndPoint(s Service) endpoint.Endpoint {
 	}
 }
 
-// @Summary Update an Emplyee
+// @Summary Update an Employee
 // @Tags Employee
 // @Accept json
 // @Produce json

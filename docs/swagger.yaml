@@ -36,25 +36,25 @@ definitions:
     properties:
       address:
         type: string
-      bussiness_phone:
+      bussinessPhone:
         type: string
       company:
         type: string
-      email_address:
+      emailAddress:
         type: string
-      fax_number:
+      faxNumber:
         type: string
-      first_name:
+      firstName:
         type: string
-      home_phone:
+      homePhone:
         type: string
       id:
         type: integer
-      job_title:
+      jobTitle:
         type: string
-      last_name:
+      lastName:
         type: string
-      mobile_phone:
+      mobilePhone:
         type: string
     type: object
   employee.EmployeeTop:
@@ -382,7 +382,7 @@ paths:
           description: Employee updated
           schema:
             $ref: '#/definitions/employee.Employee'
-      summary: Update an Emplyee
+      summary: Update an Employee
       tags:
       - Employee
   /employees/{id}:
@@ -402,7 +402,7 @@ paths:
           description: Employee
           schema:
             $ref: '#/definitions/employee.Employee'
-      summary: Delete Emplyee by Id
+      summary: Delete Employee by Id
       tags:
       - Employee
     get:
@@ -421,7 +421,7 @@ paths:
           description: Employee
           schema:
             $ref: '#/definitions/employee.Employee'
-      summary: Emplyee by Id
+      summary: Employee by Id
       tags:
       - Employee
   /employees/best-seller:
@@ -435,7 +435,7 @@ paths:
           description: Best Employee
           schema:
             $ref: '#/definitions/employee.EmployeeTop'
-      summary: Best Emplyee
+      summary: Best Employee
       tags:
       - Employee
   /employees/paginated:
@@ -456,7 +456,7 @@ paths:
           description: Paginate list of employees
           schema:
             $ref: '#/definitions/employee.EmployeesList'
-      summary: Emplyees list
+      summary: Employees list
       tags:
       - Employee
   /orders/:
