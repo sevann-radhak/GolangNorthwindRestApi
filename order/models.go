@@ -6,29 +6,29 @@ type OrderItem struct {
 	City       string            `json:"city"`
 	Company    string            `json:"company"`
 	Customer   string            `json:"customer"`
-	CustomerId string            `json:"customer_id"`
+	CustomerId string            `json:"customerId"`
 	Data       []*OrderDetaiItem `json:"data"`
-	OrderDate  string            `json:"order_date"`
+	OrderDate  string            `json:"orderDate"`
 	Phone      string            `json:"phone"`
-	StatusId   string            `json:"status_id"`
-	StatusName string            `json:"status_name"`
+	StatusId   string            `json:"statusId"`
+	StatusName string            `json:"statusName"`
 }
 
 type OrderItemDeleted struct {
 	Data         *OrderItem `json:"data"`
-	RowsAffected int        `json:"rows_affected"`
+	RowsAffected int        `json:"rowsAffected"`
 }
 
 type OrderDetaiItem struct {
 	Id          int     `json:"id"`
-	OrderId     int     `json:"order_id"`
-	ProductId   int     `json:"product_id"`
-	ProductName string  `json:"product_name"`
+	OrderId     int     `json:"orderId"`
+	ProductId   int     `json:"productId"`
+	ProductName string  `json:"productName"`
 	Quantity    float64 `json:"quantity"`
-	UnitPrice   float64 `json:"unit_price"`
+	UnitPrice   float64 `json:"unitPrice"`
 }
 
 type OrderList struct {
 	Data         []*OrderItem `json:"data"`
-	TotalRecords int          `json:"total_records"`
+	TotalRecords int          `json:"totalRecords"`
 }
